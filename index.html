@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="en" class="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pro Web Notepad - Windows 11 Fluent UI Text Editor</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Segoe+UI:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome 6 CDN for toolbar icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  </head>
+  <body class="bg-[#f3f3f3] dark:bg-[#1f1f1f] text-[#1c1c1c] dark:text-[#f0f0f0] overflow-hidden select-none m-0 p-0 h-screen w-screen font-['Segoe_UI']">
+    <div id="app" class="fluent-editor-app h-full w-full flex flex-col overflow-hidden">
+      <!-- Hidden File Input for Local File Open -->
+      <input type="file" id="fileInput" accept=".txt,.md,.markdown,.js,.ts,.json,.html,.css,.doc,.csv" class="hidden" />
+
+      <!-- Tier 1: Windows 11 Fluent Classic Menu Bar -->
+      <header class="select-none border-b border-[#e0e0e0] dark:border-[#3a3a3a] bg-[#f8f9fa] dark:bg-[#252526] text-[#1c1c1c] dark:text-[#f0f0f0]">
+        <div className="menu-bar" class="flex items-center justify-between px-3 py-1 bg-[#eaeaea]/80 dark:bg-[#1f1f1f]/80 text-xs border-b border-[#e0e0e0] dark:border-[#333333]">
+          <div class="flex items-center space-x-1">
+            <!-- App Branding -->
+            <div class="flex items-center gap-1.5 pr-2 mr-1 border-r border-[#d0d0d0] dark:border-[#383838]">
+              <div class="w-4 h-4 rounded bg-[#0078d4] flex items-center justify-center text-white font-bold text-[10px] shadow-xs">
+                N
+              </div>
+              <span class="font-semibold text-xs tracking-tight text-[#0078d4] dark:text-[#41a5ff]">
+                Pro Web Notepad
+              </span>
+            </div>
+
+            <!-- Menus: File, Edit, Insert, View, Help -->
+            <div class="relative inline-block">
+              <button id="menuBtnFile" class="px-2.5 py-1 rounded hover:bg-[#e0e0e0] dark:hover:bg-[#333333] cursor-pointer">File</button>
+              <div id="dropdownFile" class="hidden absolute left-0 top-full mt-0.5 w-56 rounded-md shadow-lg bg-white dark:bg-[#2c2c2c] border border-[#e0e0e0] dark:border-[#3a3a3a] py-1 z-50 text-xs">
+                <button id="actionNew" class="w-full text-left px-3 py-1.5 flex items-center justify-between hover:bg-[#0078d4] hover:text-white"><span class="flex items-center gap-2"><i class="fa-solid fa-file text-gray-400 w-4"></i> New File</span><span class="text-[10px] opacity-70">Ctrl+N</span></button>
+                <button id="actionOpen" class="w-full text-left px-3 py-1.5 flex items-center justify-between hover:bg-[#0078d4] hover:text-white"><span class="flex items-center gap-2"><i class="fa-solid fa-folder-open text-gray-400 w-4"></i> Open File...</span><span class="text-[10px] opacity-70">Ctrl+O</span></button>
+                <button id="actionSave" class="w-full text-left px-3 py-1.5 flex items-center justify-between hover:bg-[#0078d4] hover:text-white"><span class="flex items-center gap-2"><i class="fa-solid fa-floppy-disk text-gray-400 w-4"></i> Save</span><span class="text-[10px] opacity-70">Ctrl+S</span></button>
+                <div class="my-1 border-t border-[#e5e5e5] dark:border-[#3d3d3d]"></div>
+                <button id="actionExportMd" class="w-full text-left px-3 py-1.5 flex items-center gap-2 hover:bg-[#0078d4] hover:text-white"><i class="fa-solid fa-file-arrow-down text-gray-400 w-4"></i> Export as .MD (Markdown)</button>
+                <button id="actionExportDoc" class="w-full text-left px-3 py-1.5 flex items-center gap-2 hover:bg-[#0078d4] hover:text-white"><i class="fa-solid fa-file-word text-gray-400 w-4"></i> Export as .DOC (MS Word)</button>
+                <button id="actionExportPdf" class="w-full text-left px-3 py-1.5 flex items-center gap-2 hover:bg-[#0078d4] hover:text-white"><i class="fa-solid fa-file-pdf text-gray-400 w-4"></i> Export as .PDF</button>
+                <button id="actionExportTxt" class="w-full text-left px-3 py-1.5 flex items-center gap-2 hover:bg-[#0078d4] hover:text-white"><i class="fa-solid fa-file-lines text-gray-400 w-4"></i> Export as .TXT (Plain Text)</button>
+                <div class="my-1 border-t border-[#e5e5e5] dark:border-[#3d3d3d]"></div>
+                <button id="actionPrint" class="w-full text-left px-3 py-1.5 flex items-center justify-between hover:bg-[#0078d4] hover:text-white"><span class="flex items-center gap-2"><i class="fa-solid fa-print text-gray-400 w-4"></i> Print Document</span><span class="text-[10px] opacity-70">Ctrl+P</span></button>
+                <button id="actionCloseTab" class="w-full text-left px-3 py-1.5 flex items-center justify-between hover:bg-[#0078d4] hover:text-white"><span class="flex items-center gap-2"><i class="fa-solid fa-xmark text-gray-400 w-4"></i> Close Tab</span><span class="text-[10px] opacity-70">Ctrl+W</span></button>
+              </div>
+            </div>
+
+            <div class="relative inline-block">
+              <button id="menuBtnEdit" class="px-2.5 py-1 rounded hover:bg-[#e0e0e0] dark:hover:bg-[#333333] cursor-pointer">Edit</button>
+              <div id="dropdownEdit" class="hidden absolute left-0 top-full mt-0.5 w-56 rounded-md shadow-lg bg-white dark:bg-[#2c2c2c] border border-[#e0e0e0] dark:border-[#3a3a3a] py-1 z-50 text-xs">
+                <button id="actionUndo" class="w-full text-left px-3 py-1.5 flex items-center justify-between hover:bg-[#0078d4] hover:text-white"><span class="flex items-center gap-2"><i class="fa-solid fa-rotate-left text-gray-400 w-4"></i> Undo</span><span class="text-[10px] opacity-70">Ctrl+Z</span></button>
+                <button id="actionRedo" class="w-full text-left px-3 py-1.5 flex items-center justify-between hover:bg-[#0078d4] hover:text-white"><span class="flex items-center gap-2"><i class="fa-solid fa-rotate-right text-gray-400 w-4"></i> Redo</span><span class="text-[10px] opacity-70">Ctrl+Y</span></button>
+                <div class="my-1 border-t border-[#e5e5e5] dark:border-[#3d3d3d]"></div>
+                <button id="actionCut" class="w-full text-left px-3 py-1.5 flex items-center justify-between hover:bg-[#0078d4] hover:text-white"><span class="flex items-center gap-2"><i class="fa-solid fa-scissors text-gray-400 w-4"></i> Cut</span><span class="text-[10px] opacity-70">Ctrl+X</span></button>
+                <button id="actionCopy" class="w-full text-left px-3 py-1.5 flex items-center justify-between hover:bg-[#0078d4] hover:text-white"><span class="flex items-center gap-2"><i class="fa-solid fa-copy text-gray-400 w-4"></i> Copy</span><span class="text-[10px] opacity-70">Ctrl+C</span></button>
+                <button id="actionPaste" class="w-full text-left px-3 py-1.5 flex items-center justify-between hover:bg-[#0078d4] hover:text-white"><span class="flex items-center gap-2"><i class="fa-solid fa-paste text-gray-400 w-4"></i> Paste</span><span class="text-[10px] opacity-70">Ctrl+V</span></button>
+                <div class="my-1 border-t border-[#e5e5e5] dark:border-[#3d3d3d]"></div>
+                <button id="actionFind" class="w-full text-left px-3 py-1.5 flex items-center justify-between hover:bg-[#0078d4] hover:text-white"><span class="flex items-center gap-2"><i class="fa-solid fa-binoculars text-gray-400 w-4"></i> Find & Replace</span><span class="text-[10px] opacity-70">Ctrl+F</span></button>
+                <button id="actionSelectAll" class="w-full text-left px-3 py-1.5 flex items-center justify-between hover:bg-[#0078d4] hover:text-white"><span class="flex items-center gap-2"><i class="fa-solid fa-border-all text-gray-400 w-4"></i> Select All</span><span class="text-[10px] opacity-70">Ctrl+A</span></button>
+              </div>
+            </div>
+
+            <div class="relative inline-block">
+              <button id="menuBtnInsert" class="px-2.5 py-1 rounded hover:bg-[#e0e0e0] dark:hover:bg-[#333333] cursor-pointer">Insert</button>
+              <div id="dropdownInsert" class="hidden absolute left-0 top-full mt-0.5 w-56 rounded-md shadow-lg bg-white dark:bg-[#2c2c2c] border border-[#e0e0e0] dark:border-[#3a3a3a] py-1 z-50 text-xs">
+                <button data-format="p" class="btn-format w-full text-left px-3 py-1.5 hover:bg-[#0078d4] hover:text-white flex items-center gap-2"><i class="fa-solid fa-paragraph text-gray-400 w-4"></i> Normal Paragraph</button>
+                <button data-format="h1" class="btn-format w-full text-left px-3 py-1.5 hover:bg-[#0078d4] hover:text-white flex items-center gap-2"><i class="fa-solid fa-heading text-gray-400 w-4"></i> Heading 1 (H1)</button>
+                <button data-format="h2" class="btn-format w-full text-left px-3 py-1.5 hover:bg-[#0078d4] hover:text-white flex items-center gap-2"><i class="fa-solid fa-heading text-gray-400 w-4"></i> Heading 2 (H2)</button>
+                <button data-format="h3" class="btn-format w-full text-left px-3 py-1.5 hover:bg-[#0078d4] hover:text-white flex items-center gap-2"><i class="fa-solid fa-heading text-gray-400 w-4"></i> Heading 3 (H3)</button>
+                <button data-format="h4" class="btn-format w-full text-left px-3 py-1.5 hover:bg-[#0078d4] hover:text-white flex items-center gap-2"><i class="fa-solid fa-heading text-gray-400 w-4"></i> Heading 4 (H4)</button>
+                <button data-format="h5" class="btn-format w-full text-left px-3 py-1.5 hover:bg-[#0078d4] hover:text-white flex items-center gap-2"><i class="fa-solid fa-heading text-gray-400 w-4"></i> Heading 5 (H5)</button>
+                <div class="my-1 border-t border-[#e5e5e5] dark:border-[#3d3d3d]"></div>
+                <button data-format="insertUnorderedList" class="btn-format w-full text-left px-3 py-1.5 hover:bg-[#0078d4] hover:text-white flex items-center gap-2"><i class="fa-solid fa-list-ul text-gray-400 w-4"></i> Bullet List</button>
+                <button data-format="insertOrderedList" class="btn-format w-full text-left px-3 py-1.5 hover:bg-[#0078d4] hover:text-white flex items-center gap-2"><i class="fa-solid fa-list-ol text-gray-400 w-4"></i> Numbered List</button>
+                <button data-format="formatBlockQuote" class="btn-format w-full text-left px-3 py-1.5 hover:bg-[#0078d4] hover:text-white flex items-center gap-2"><i class="fa-solid fa-quote-left text-gray-400 w-4"></i> Blockquote</button>
+                <button id="actionInsertTable" class="w-full text-left px-3 py-1.5 hover:bg-[#0078d4] hover:text-white flex items-center gap-2"><i class="fa-solid fa-table text-gray-400 w-4"></i> Table Template</button>
+                <button id="actionInsertHR" class="w-full text-left px-3 py-1.5 hover:bg-[#0078d4] hover:text-white flex items-center gap-2"><i class="fa-solid fa-minus text-gray-400 w-4"></i> Horizontal Divider</button>
+              </div>
+            </div>
+
+            <div class="relative inline-block">
+              <button id="menuBtnView" class="px-2.5 py-1 rounded hover:bg-[#e0e0e0] dark:hover:bg-[#333333] cursor-pointer">View</button>
+              <div id="dropdownView" class="hidden absolute left-0 top-full mt-0.5 w-56 rounded-md shadow-lg bg-white dark:bg-[#2c2c2c] border border-[#e0e0e0] dark:border-[#3a3a3a] py-1 z-50 text-xs">
+                <button data-grid="1" class="btn-grid w-full text-left px-3 py-1.5 hover:bg-[#0078d4] hover:text-white">1 Panel (Single)</button>
+                <button data-grid="2" class="btn-grid w-full text-left px-3 py-1.5 hover:bg-[#0078d4] hover:text-white">2 Panels (Split)</button>
+                <button data-grid="3" class="btn-grid w-full text-left px-3 py-1.5 hover:bg-[#0078d4] hover:text-white">3 Panels (Columns)</button>
+                <button data-grid="4" class="btn-grid w-full text-left px-3 py-1.5 hover:bg-[#0078d4] hover:text-white">4 Panels (2x2 Grid)</button>
+                <button data-grid="6" class="btn-grid w-full text-left px-3 py-1.5 hover:bg-[#0078d4] hover:text-white">6 Panels (3x2 Grid)</button>
+                <div class="my-1 border-t border-[#e5e5e5] dark:border-[#3d3d3d]"></div>
+                <button id="actionTogglePreview" class="w-full text-left px-3 py-1.5 hover:bg-[#0078d4] hover:text-white">Toggle HTML View</button>
+                <button id="actionToggleDiff" class="w-full text-left px-3 py-1.5 hover:bg-[#0078d4] hover:text-white">Toggle Side-by-Side Revision Diff</button>
+                <button id="actionToggleTheme" class="w-full text-left px-3 py-1.5 hover:bg-[#0078d4] hover:text-white">Toggle Light/Dark Theme</button>
+              </div>
+            </div>
+
+            <div class="relative inline-block">
+              <button id="menuBtnHelp" class="px-2.5 py-1 rounded hover:bg-[#e0e0e0] dark:hover:bg-[#333333] cursor-pointer">Help</button>
+              <div id="dropdownHelp" class="hidden absolute left-0 top-full mt-0.5 w-56 rounded-md shadow-lg bg-white dark:bg-[#2c2c2c] border border-[#e0e0e0] dark:border-[#3a3a3a] py-1 z-50 text-xs">
+                <button id="actionModalShortcuts" class="w-full text-left px-3 py-1.5 hover:bg-[#0078d4] hover:text-white">Keyboard Shortcuts</button>
+                <button id="actionModalAbout" class="w-full text-left px-3 py-1.5 hover:bg-[#0078d4] hover:text-white">About Pro Web Notepad</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="hidden sm:flex items-center gap-3 text-[11px] text-gray-500 dark:text-gray-400">
+            <span class="bg-[#e0e0e0]/60 dark:bg-[#333]/60 px-2 py-0.5 rounded text-[10px]">
+              <i class="fa-solid fa-bolt text-[#0078d4] mr-1"></i>Rich Text Editor
+            </span>
+          </div>
+        </div>
+
+        <!-- Tier 2: Visual Icon Toolbar -->
+        <div class="flex items-center justify-between px-3 py-1.5 bg-[#f3f3f3] dark:bg-[#252526] overflow-x-auto no-scrollbar">
+          <div class="flex items-center space-x-1.5 flex-nowrap text-xs">
+            <!-- File Actions -->
+            <button id="toolNew" title="New File (Ctrl+N)" class="p-1.5 rounded hover:bg-[#e2e2e2] dark:hover:bg-[#3a3a3a] text-gray-700 dark:text-gray-200"><i class="fa-regular fa-file"></i></button>
+            <button id="toolOpen" title="Open File (Ctrl+O)" class="p-1.5 rounded hover:bg-[#e2e2e2] dark:hover:bg-[#3a3a3a] text-gray-700 dark:text-gray-200"><i class="fa-regular fa-folder-open"></i></button>
+            <button id="toolSave" title="Save File (Ctrl+S)" class="p-1.5 rounded hover:bg-[#e2e2e2] dark:hover:bg-[#3a3a3a] text-[#0078d4] dark:text-[#41a5ff]"><i class="fa-regular fa-floppy-disk"></i></button>
+            <button id="toolPrint" title="Print Document (Ctrl+P)" class="p-1.5 rounded hover:bg-[#e2e2e2] dark:hover:bg-[#3a3a3a] text-gray-700 dark:text-gray-200"><i class="fa-solid fa-print"></i></button>
+
+            <div class="h-4 w-px bg-[#d0d0d0] dark:bg-[#3d3d3d] mx-1"></div>
+
+            <!-- Clipboard & History -->
+            <button id="toolUndo" title="Undo (Ctrl+Z)" class="p-1.5 rounded hover:bg-[#e2e2e2] dark:hover:bg-[#3a3a3a] text-gray-700 dark:text-gray-200"><i class="fa-solid fa-arrow-rotate-left"></i></button>
+            <button id="toolRedo" title="Redo (Ctrl+Y)" class="p-1.5 rounded hover:bg-[#e2e2e2] dark:hover:bg-[#3a3a3a] text-gray-700 dark:text-gray-200"><i class="fa-solid fa-arrow-rotate-right"></i></button>
+            <button id="toolCut" title="Cut (Ctrl+X)" class="p-1.5 rounded hover:bg-[#e2e2e2] dark:hover:bg-[#3a3a3a] text-gray-700 dark:text-gray-200"><i class="fa-solid fa-scissors"></i></button>
+            <button id="toolCopy" title="Copy (Ctrl+C)" class="p-1.5 rounded hover:bg-[#e2e2e2] dark:hover:bg-[#3a3a3a] text-gray-700 dark:text-gray-200"><i class="fa-regular fa-copy"></i></button>
+            <button id="toolPaste" title="Paste (Ctrl+V)" class="p-1.5 rounded hover:bg-[#e2e2e2] dark:hover:bg-[#3a3a3a] text-gray-700 dark:text-gray-200"><i class="fa-regular fa-clipboard"></i></button>
+
+            <div class="h-4 w-px bg-[#d0d0d0] dark:bg-[#3d3d3d] mx-1"></div>
+
+            <!-- Search -->
+            <button id="toolSearch" title="Find & Replace (Ctrl+F)" class="p-1.5 rounded hover:bg-[#e2e2e2] dark:hover:bg-[#3a3a3a] text-gray-700 dark:text-gray-200"><i class="fa-solid fa-binoculars"></i></button>
+
+            <div class="h-4 w-px bg-[#d0d0d0] dark:bg-[#3d3d3d] mx-1"></div>
+
+            <!-- Headings Dropdown -->
+            <select id="headingSelect" title="Select Heading Style" class="text-xs bg-white dark:bg-[#2d2d2d] border border-[#ccc] dark:border-[#444] rounded px-2 py-1 focus:outline-none text-gray-800 dark:text-gray-200">
+              <option value="p">Normal Text (P)</option>
+              <option value="h1">Heading 1 (H1)</option>
+              <option value="h2">Heading 2 (H2)</option>
+              <option value="h3">Heading 3 (H3)</option>
+              <option value="h4">Heading 4 (H4)</option>
+              <option value="h5">Heading 5 (H5)</option>
+            </select>
+
+            <div class="h-4 w-px bg-[#d0d0d0] dark:bg-[#3d3d3d] mx-1"></div>
+
+            <!-- Inline Styles -->
+            <button id="toolBold" title="Bold" class="p-1.5 rounded hover:bg-[#e2e2e2] dark:hover:bg-[#3a3a3a] text-gray-700 dark:text-gray-200 font-bold"><i class="fa-solid fa-bold"></i></button>
+            <button id="toolItalic" title="Italic" class="p-1.5 rounded hover:bg-[#e2e2e2] dark:hover:bg-[#3a3a3a] text-gray-700 dark:text-gray-200 italic"><i class="fa-solid fa-italic"></i></button>
+            <button id="toolUnderline" title="Underline" class="p-1.5 rounded hover:bg-[#e2e2e2] dark:hover:bg-[#3a3a3a] text-gray-700 dark:text-gray-200 underline"><i class="fa-solid fa-underline"></i></button>
+            <button id="toolStrikethrough" title="Strikethrough" class="p-1.5 rounded hover:bg-[#e2e2e2] dark:hover:bg-[#3a3a3a] text-gray-700 dark:text-gray-200 line-through"><i class="fa-solid fa-strikethrough"></i></button>
+
+            <div class="h-4 w-px bg-[#d0d0d0] dark:bg-[#3d3d3d] mx-1"></div>
+
+            <!-- Text Alignments -->
+            <button id="toolAlignLeft" title="Align Left" class="p-1.5 rounded hover:bg-[#e2e2e2] dark:hover:bg-[#3a3a3a] text-gray-700 dark:text-gray-200"><i class="fa-solid fa-align-left"></i></button>
+            <button id="toolAlignCenter" title="Align Center" class="p-1.5 rounded hover:bg-[#e2e2e2] dark:hover:bg-[#3a3a3a] text-gray-700 dark:text-gray-200"><i class="fa-solid fa-align-center"></i></button>
+            <button id="toolAlignRight" title="Align Right" class="p-1.5 rounded hover:bg-[#e2e2e2] dark:hover:bg-[#3a3a3a] text-gray-700 dark:text-gray-200"><i class="fa-solid fa-align-right"></i></button>
+            <button id="toolAlignJustify" title="Justify" class="p-1.5 rounded hover:bg-[#e2e2e2] dark:hover:bg-[#3a3a3a] text-gray-700 dark:text-gray-200"><i class="fa-solid fa-align-justify"></i></button>
+
+            <div class="h-4 w-px bg-[#d0d0d0] dark:bg-[#3d3d3d] mx-1"></div>
+
+            <!-- Lists & Extras -->
+            <button id="toolList" title="Bullet List" class="p-1.5 rounded hover:bg-[#e2e2e2] dark:hover:bg-[#3a3a3a] text-gray-700 dark:text-gray-200"><i class="fa-solid fa-list-ul"></i></button>
+            <button id="toolNumList" title="Numbered List" class="p-1.5 rounded hover:bg-[#e2e2e2] dark:hover:bg-[#3a3a3a] text-gray-700 dark:text-gray-200"><i class="fa-solid fa-list-ol"></i></button>
+            <button id="toolQuote" title="Blockquote" class="p-1.5 rounded hover:bg-[#e2e2e2] dark:hover:bg-[#3a3a3a] text-gray-700 dark:text-gray-200"><i class="fa-solid fa-quote-left"></i></button>
+
+            <!-- Colors -->
+            <label id="lblTextColor" title="Text Color" class="p-1.5 rounded hover:bg-[#e2e2e2] dark:hover:bg-[#3a3a3a] text-gray-700 dark:text-gray-200 cursor-pointer flex items-center gap-1">
+              <i class="fa-solid fa-palette text-[#0078d4]"></i>
+              <input type="color" id="inputTextColor" value="#000000" class="w-0 h-0 opacity-0 cursor-pointer absolute" />
+            </label>
+            <label id="lblBgColor" title="Highlight Color" class="p-1.5 rounded hover:bg-[#e2e2e2] dark:hover:bg-[#3a3a3a] text-gray-700 dark:text-gray-200 cursor-pointer flex items-center gap-1">
+              <i class="fa-solid fa-highlighter text-amber-500"></i>
+              <input type="color" id="inputBgColor" value="#ffff00" class="w-0 h-0 opacity-0 cursor-pointer absolute" />
+            </label>
+
+            <div class="h-4 w-px bg-[#d0d0d0] dark:bg-[#3d3d3d] mx-1"></div>
+
+            <!-- Typography Controls -->
+            <select id="fontFamilySelect" class="text-xs bg-white dark:bg-[#2d2d2d] border border-[#ccc] dark:border-[#444] rounded px-2 py-1 focus:outline-none">
+              <option value="Segoe UI">Segoe UI</option>
+              <option value="Arial">Arial</option>
+              <option value="Calibri">Calibri</option>
+              <option value="Times New Roman">Times New Roman</option>
+              <option value="Georgia">Georgia</option>
+              <option value="Courier New">Courier New</option>
+            </select>
+
+            <div class="flex items-center space-x-0.5">
+              <button id="btnFontDec" title="Decrease Font Size" class="px-1.5 py-1 text-xs bg-white dark:bg-[#2d2d2d] border border-[#ccc] dark:border-[#444] rounded-l hover:bg-gray-100 dark:hover:bg-[#383838]"><i class="fa-solid fa-minus text-[10px]"></i></button>
+              <select id="fontSizeSelect" class="text-xs bg-white dark:bg-[#2d2d2d] border-y border-[#ccc] dark:border-[#444] px-1.5 py-1 focus:outline-none">
+                <option value="1">10px</option>
+                <option value="2">12px</option>
+                <option value="3" selected>14px (Normal)</option>
+                <option value="4">18px</option>
+                <option value="5">24px (Large)</option>
+                <option value="6">32px (X-Large)</option>
+                <option value="7">48px (Huge)</option>
+              </select>
+              <button id="btnFontInc" title="Increase Font Size" class="px-1.5 py-1 text-xs bg-white dark:bg-[#2d2d2d] border border-[#ccc] dark:border-[#444] rounded-r hover:bg-gray-100 dark:hover:bg-[#383838]"><i class="fa-solid fa-plus text-[10px]"></i></button>
+            </div>
+
+            <div class="h-4 w-px bg-[#d0d0d0] dark:bg-[#3d3d3d] mx-1"></div>
+
+            <!-- Fullscreen -->
+            <button id="toolFullscreen" title="Toggle Fullscreen" class="p-1.5 rounded hover:bg-[#e2e2e2] dark:hover:bg-[#3a3a3a] text-gray-700 dark:text-gray-200"><i class="fa-solid fa-expand"></i></button>
+          </div>
+
+          <!-- Right Grid Layout Selectors -->
+          <div class="flex items-center gap-1.5 ml-2">
+            <div class="flex items-center bg-[#e5e5e5] dark:bg-[#303030] p-0.5 rounded border border-[#d0d0d0] dark:border-[#3a3a3a]">
+              <button data-grid="1" class="btn-grid px-2 py-0.5 text-[11px] rounded font-medium bg-[#0078d4] text-white">1P</button>
+              <button data-grid="2" class="btn-grid px-2 py-0.5 text-[11px] rounded font-medium text-gray-600 dark:text-gray-300">2P</button>
+              <button data-grid="3" class="btn-grid px-2 py-0.5 text-[11px] rounded font-medium text-gray-600 dark:text-gray-300">3P</button>
+              <button data-grid="4" class="btn-grid px-2 py-0.5 text-[11px] rounded font-medium text-gray-600 dark:text-gray-300">4P</button>
+              <button data-grid="6" class="btn-grid px-2 py-0.5 text-[11px] rounded font-medium text-gray-600 dark:text-gray-300">6P</button>
+            </div>
+            <button id="toolTheme" title="Toggle Theme" class="p-1.5 rounded hover:bg-[#e2e2e2] dark:hover:bg-[#3a3a3a] text-yellow-500"><i class="fa-solid fa-sun"></i></button>
+          </div>
+        </div>
+      </header>
+
+      <!-- Tab Bar -->
+      <div class="flex items-center bg-[#eaeaea] dark:bg-[#1f1f1f] border-b border-[#e0e0e0] dark:border-[#333333] px-2 pt-1.5 overflow-x-auto no-scrollbar select-none">
+        <div id="tabContainer" class="flex items-center space-x-1 min-w-max">
+          <!-- Dynamic Tabs Rendered by JavaScript -->
+        </div>
+        <button id="btnNewTab" title="New Tab (Ctrl+N)" class="p-1.5 ml-1.5 rounded-md bg-[#f0f0f0] dark:bg-[#2c2c2c] hover:bg-[#e0e0e0] dark:hover:bg-[#3a3a3a] text-gray-600 dark:text-gray-300 cursor-pointer">
+          <i class="fa-solid fa-plus text-xs"></i>
+        </button>
+      </div>
+
+      <!-- Multi-Panel Workspace Grid Container -->
+      <main class="flex-1 relative overflow-hidden p-2 bg-[#f3f3f3] dark:bg-[#1f1f1f]">
+        <!-- Find & Replace Floating Bar -->
+        <div id="findReplaceBar" class="hidden absolute top-3 right-5 z-40 bg-white dark:bg-[#2d2d2d] border border-[#e0e0e0] dark:border-[#3a3a3a] shadow-xl rounded-lg p-2.5 w-80 text-xs">
+          <div class="flex items-center justify-between mb-2 pb-1 border-b border-gray-200 dark:border-gray-700">
+            <span class="font-semibold text-gray-700 dark:text-gray-200 flex items-center gap-1.5"><i class="fa-solid fa-binoculars text-[#0078d4]"></i> Find & Replace</span>
+            <button id="btnCloseFind" class="p-1 text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"><i class="fa-solid fa-xmark"></i></button>
+          </div>
+          <div class="flex items-center gap-1 mb-2">
+            <input type="text" id="findInput" placeholder="Find text..." class="flex-1 px-2 py-1 text-xs bg-[#f8f9fa] dark:bg-[#1f1f1f] border border-gray-300 dark:border-gray-600 rounded focus:outline-none" />
+            <button id="btnFindNext" class="p-1 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 rounded"><i class="fa-solid fa-chevron-down"></i></button>
+          </div>
+          <div class="flex items-center gap-1 mb-2">
+            <input type="text" id="replaceInput" placeholder="Replace with..." class="flex-1 px-2 py-1 text-xs bg-[#f8f9fa] dark:bg-[#1f1f1f] border border-gray-300 dark:border-gray-600 rounded focus:outline-none" />
+            <button id="btnReplace" class="px-2 py-1 bg-[#0078d4] text-white rounded text-[11px] hover:bg-[#106ebe]">Replace</button>
+            <button id="btnReplaceAll" class="px-2 py-1 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded text-[11px]">All</button>
+          </div>
+        </div>
+
+        <!-- Dynamic Grid Container -->
+        <div id="gridWorkspace" class="grid h-full w-full gap-2 grid-cols-1 grid-rows-1">
+          <!-- Dynamic Panels Rendered by JavaScript -->
+        </div>
+      </main>
+
+      <!-- Status Bar -->
+      <footer class="select-none flex items-center justify-between px-3 py-1 bg-[#eaeaea] dark:bg-[#1f1f1f] border-t border-[#e0e0e0] dark:border-[#333333] text-[11px] text-gray-600 dark:text-gray-400 font-mono">
+        <div class="flex items-center gap-4">
+          <span id="statusCursor">Ln 1, Col 1</span>
+          <span id="statusStats">0 words, 0 chars, 0 lines</span>
+        </div>
+        <div class="hidden sm:flex items-center gap-4">
+          <span id="statusFont">Segoe UI, 14px</span>
+          <span id="statusLayout">Layout: 1 Panel</span>
+          <span>UTF-8</span>
+          <span class="uppercase px-1.5 py-0.5 rounded bg-gray-200 dark:bg-gray-800 text-[10px] font-semibold text-[#0078d4]">RICH TEXT</span>
+        </div>
+      </footer>
+
+      <!-- Modals -->
+      <div id="modalOverlay" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-xs p-4">
+        <div id="modalContent" class="bg-white dark:bg-[#2c2c2c] border border-[#e0e0e0] dark:border-[#3a3a3a] shadow-2xl rounded-xl w-full max-w-lg p-5 text-[#1c1c1c] dark:text-[#f0f0f0]">
+          <!-- Dynamic Modal Content -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Main JavaScript Module -->
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

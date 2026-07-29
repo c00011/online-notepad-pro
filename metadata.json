@@ -1,0 +1,6 @@
+{
+  "name": "Pro Web Notepad",
+  "description": "Windows 11 Fluent UI style web text editor with multi-panel grid, tabbed editing, live markdown preview, side-by-side diff, and client-side PDF/DOC exports.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
